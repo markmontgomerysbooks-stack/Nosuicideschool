@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anti-Suicide School</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Georgia,serif;background:#f9f9f7;color:#1a1a1a;min-height:100vh}
+.top-bar{background:#085041;color:#fff;padding:14px 20px;display:flex;align-items:center;gap:12px}
+.top-bar h1{font-size:1.1rem;font-weight:700}
+.top-bar span{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.6)}
+.crisis-bar{background:#7B1818;color:#fff;padding:14px 20px;font-family:sans-serif;font-size:14px;line-height:1.6}
+.crisis-bar a{color:#FFD0D0;font-weight:700;text-decoration:none}
+.disclaimer{background:#FFF8F0;border-bottom:2px solid #F0D9BE;padding:14px 20px;font-family:sans-serif;font-size:13px;color:#5A4422;line-height:1.6}
+.disclaimer p{margin-bottom:6px}
+.disclaimer p:last-child{margin-bottom:0}
+#edit-btn{position:fixed;top:14px;right:14px;background:#1a1a1a;color:#fff;border:none;padding:7px 14px;border-radius:6px;font-size:12px;cursor:pointer;z-index:999;opacity:.7}
+#edit-btn:hover{opacity:1}
+.hero{text-align:center;padding:3rem 1.5rem 1.5rem;max-width:700px;margin:0 auto}
+.hero .eyebrow{font-family:sans-serif;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#1D9E75;margin-bottom:1rem}
+.hero h2{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:400;line-height:1.2;margin-bottom:1rem}
+.hero p{font-size:1rem;line-height:1.75;color:#444}
+.divider{width:48px;height:2px;background:#5DCAA5;margin:1.5rem auto}
+#home-view{max-width:880px;margin:0 auto;padding:0 1.2rem 4rem}
+.section-label{font-family:sans-serif;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#888;text-align:center;margin-bottom:1.2rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.topic-btn{background:#fff;border:1px solid rgba(0,0,0,.1);border-radius:12px;padding:16px 12px;text-align:left;cursor:pointer;transition:transform .12s,box-shadow .15s,border-color .15s;display:flex;flex-direction:column;gap:7px}
+.topic-btn:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,.07);border-color:#5DCAA5}
+.topic-btn .icon{font-size:20px}
+.topic-btn .name{font-family:sans-serif;font-size:13px;font-weight:600;color:#1a1a1a;line-height:1.3}
+.topic-btn .sub{font-family:sans-serif;font-size:11px;color:#888;line-height:1.4}
+#boardgame-section{max-width:880px;margin:0 auto 3rem;padding:0 1.2rem}
+.section-heading{font-family:sans-serif;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#888;text-align:center;margin-bottom:1.2rem}
+.boardgame-card{background:#fff;border:1px solid rgba(0,0,0,.1);border-radius:16px;overflow:hidden}
+.boardgame-card-header{background:#085041;color:#fff;padding:1.2rem 1.6rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.boardgame-card-header h3{font-size:1.1rem;font-weight:600}
+.boardgame-card-header p{font-family:sans-serif;font-size:12px;color:rgba(255,255,255,.7);margin-top:3px}
+.boardgame-img-wrap{position:relative;background:#f0ede8;min-height:200px;display:flex;align-items:center;justify-content:center}
+.boardgame-img-wrap img{width:100%;max-height:520px;object-fit:contain;display:block}
+#boardgame-placeholder{text-align:center;padding:3rem 1rem;color:#aaa;font-family:sans-serif;font-size:14px}
+#boardgame-placeholder .ph-icon{font-size:48px;margin-bottom:.8rem}
+.boardgame-footer{padding:1.2rem 1.6rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;border-top:1px solid rgba(0,0,0,.08)}
+.btn-download{display:inline-flex;align-items:center;gap:7px;background:#1D9E75;color:#fff;border:none;border-radius:8px;padding:10px 20px;font-family:sans-serif;font-size:13px;font-weight:600;cursor:pointer;text-decoration:none}
+.btn-download:hover{background:#178c65}
+.btn-download:not([href]){opacity:.4;cursor:default;pointer-events:none}
+#boardgame-desc{font-family:sans-serif;font-size:13px;color:#666;line-height:1.5}
+#bg-admin-bar{display:none;padding:1rem 1.6rem;background:#FFF8F0;border-top:1px solid #F0D9BE;gap:10px;align-items:center;flex-wrap:wrap}
+#bg-admin-bar.show{display:flex}
+#bg-admin-bar label{font-family:sans-serif;font-size:12px;color:#888;letter-spacing:.05em;text-transform:uppercase}
+.btn-upload-bg{background:#085041;color:#fff;border:none;border-radius:8px;padding:8px 16px;font-family:sans-serif;font-size:13px;font-weight:600;cursor:pointer}
+.btn-upload-bg:hover{background:#063d2f}
+#bg-upload-status{font-family:sans-serif;font-size:12px;color:#888}
+#cards-section{max-width:880px;margin:0 auto 4rem;padding:0 1.2rem}
+.cards-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem;flex-wrap:wrap;gap:10px}
+.cards-count{font-family:sans-serif;font-size:12px;color:#aaa;margin-top:2px}
+#cards-admin-bar{display:none;gap:10px;align-items:center;flex-wrap:wrap}
+#cards-admin-bar.show{display:flex}
+.btn-upload-card{background:#1D9E75;color:#fff;border:none;border-radius:8px;padding:8px 16px;font-family:sans-serif;font-size:13px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.btn-upload-card:hover{background:#178c65}
+#card-upload-status{font-family:sans-serif;font-size:12px;color:#888}
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px}
+.card-thumb{background:#fff;border:1px solid rgba(0,0,0,.1);border-radius:12px;overflow:hidden;position:relative;transition:transform .12s,box-shadow .15s}
+.card-thumb:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.1)}
+.card-thumb img{width:100%;aspect-ratio:3/4;object-fit:cover;display:block;cursor:pointer}
+.card-thumb-del{display:none;position:absolute;top:6px;right:6px;background:rgba(180,0,0,.85);color:#fff;border:none;border-radius:50%;width:24px;height:24px;font-size:14px;line-height:1;cursor:pointer;align-items:center;justify-content:center}
+.card-thumb:hover .card-thumb-del.admin-visible{display:flex}
+#cards-empty{text-align:center;padding:3rem 1rem;color:#aaa;font-family:sans-serif;font-size:14px;grid-column:1/-1}
+#cards-empty .ph-icon{font-size:48px;margin-bottom:.8rem}
+#lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:2000;align-items:center;justify-content:center}
+#lightbox.open{display:flex}
+#lightbox img{max-width:92vw;max-height:90vh;object-fit:contain;border-radius:8px;box-shadow:0 8px 40px rgba(0,0,0,.5)}
+#lightbox-close{position:absolute;top:16px;right:20px;background:none;border:none;color:#fff;font-size:28px;cursor:pointer;line-height:1}
+#lightbox-prev,#lightbox-next{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.15);border:none;color:#fff;font-size:28px;width:48px;height:48px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center}
+#lightbox-prev{left:12px}
+#lightbox-next{right:12px}
+#lightbox-prev:hover,#lightbox-next:hover{background:rgba(255,255,255,.28)}
+#journey-view{display:none;max-width:700px;margin:0 auto;padding:0 1.2rem 4rem}
+.back-btn{background:none;border:none;color:#1D9E75;font-family:sans-serif;font-size:13px;cursor:pointer;padding:0;margin-bottom:1.5rem;display:inline-block}
+.journey-label{font-family:sans-serif;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#1D9E75;margin-bottom:.4rem}
+.journey-title{font-size:clamp(1.4rem,3vw,2rem);font-weight:400;margin-bottom:1.5rem}
+.progress{display:flex;gap:5px;margin-bottom:2rem}
+.pip{height:4px;flex:1;border-radius:2px;background:rgba(0,0,0,.1);transition:background .3s}
+.pip.done{background:#1D9E75}
+.pip.active{background:#5DCAA5}
+.card{background:#fff;border:1px solid rgba(0,0,0,.1);border-radius:16px;padding:2rem;min-height:240px;margin-bottom:1.5rem}
+.card.affirmation{background:#E1F5EE;border-color:#5DCAA5}
+.card.reflection{background:#EEEDFE;border-color:#AFA9EC}
+.card.tip{background:#FAEEDA;border-color:#FAC775}
+.card-eyebrow{font-family:sans-serif;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#888;margin-bottom:.8rem}
+.card.affirmation .card-eyebrow{color:#085041}
+.card.reflection .card-eyebrow{color:#534AB7}
+.card.tip .card-eyebrow{color:#BA7517}
+.card-title{font-size:1.3rem;font-weight:400;margin-bottom:.9rem;line-height:1.3}
+.card.affirmation .card-title{color:#085041}
+.card.reflection .card-title{color:#534AB7}
+.card.tip .card-title{color:#BA7517}
+.card-body{font-size:.95rem;line-height:1.8;color:#444;white-space:pre-wrap}
+.screen-nav{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-bottom:2rem}
+.btn-prev{background:none;border:1px solid rgba(0,0,0,.2);color:#888;border-radius:8px;padding:10px 20px;font-size:14px;cursor:pointer;font-family:Georgia,serif}
+.btn-prev:disabled{opacity:.3;cursor:default}
+.btn-next{background:#1D9E75;border:none;color:#fff;border-radius:8px;padding:10px 24px;font-size:14px;cursor:pointer;font-family:Georgia,serif}
+.counter{font-family:sans-serif;font-size:13px;color:#888}
+.ai-panel{background:#fff;border:1px solid rgba(0,0,0,.1);border-radius:16px;padding:1.5rem}
+.ai-header{display:flex;align-items:center;gap:10px;margin-bottom:1rem}
+.ai-badge{background:#1a1a1a;color:#fff;font-family:sans-serif;font-size:10px;letter-spacing:.1em;padding:3px 8px;border-radius:4px;text-transform:uppercase}
+.ai-header span{font-family:sans-serif;font-size:14px;font-weight:600}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:1rem}
+.chip{background:#f9f9f7;border:1px solid rgba(0,0,0,.15);border-radius:20px;padding:6px 14px;font-family:sans-serif;font-size:12px;color:#444;cursor:pointer}
+.chip:hover{border-color:#1D9E75;color:#085041}
+.ai-row{display:flex;gap:8px}
+.ai-input{flex:1;border:1px solid rgba(0,0,0,.2);border-radius:8px;padding:10px 14px;font-family:Georgia,serif;font-size:14px;color:#1a1a1a;background:#f9f9f7}
+.ai-send{background:#1D9E75;border:none;color:#fff;border-radius:8px;padding:10px 18px;font-size:13px;cursor:pointer;font-family:sans-serif}
+.ai-out{display:none;margin-top:1rem;padding:1rem;background:#f9f9f7;border:1px solid rgba(0,0,0,.1);border-radius:8px;font-size:14px;line-height:1.75;color:#444;white-space:pre-wrap}
+.dots{display:inline-flex;gap:4px;align-items:center}
+.dots span{width:6px;height:6px;border-radius:50%;background:#5DCAA5;animation:blink 1.2s infinite}
+.dots span:nth-child(2){animation-delay:.2s}
+.dots span:nth-child(3){animation-delay:.4s}
+@keyframes blink{0%,80%,100%{transform:scale(.6);opacity:.4}40%{transform:scale(1);opacity:1}}
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:1000;align-items:flex-start;justify-content:center;padding:20px;overflow-y:auto}
+.modal-bg.open{display:flex}
+.modal{background:#fff;border-radius:16px;width:100%;max-width:700px;margin:auto}
+.modal-header{display:flex;align-items:center;justify-content:space-between;padding:1.4rem 1.6rem;border-bottom:1px solid rgba(0,0,0,.08)}
+.modal-header h3{font-size:17px;font-weight:600}
+.modal-close{background:none;border:none;font-size:20px;color:#888;cursor:pointer;line-height:1}
+.modal-tabs{display:flex;border-bottom:1px solid rgba(0,0,0,.08)}
+.mtab{flex:1;padding:11px;font-family:sans-serif;font-size:13px;font-weight:600;background:none;border:none;cursor:pointer;color:#888;border-bottom:3px solid transparent;transition:color .15s,border-color .15s}
+.mtab.active{color:#085041;border-bottom-color:#1D9E75}
+.modal-body{padding:1.4rem 1.6rem}
+#pw-screen{display:flex;flex-direction:column;gap:12px;padding:1.4rem 1.6rem}
+#pw-screen p{font-family:sans-serif;font-size:14px;color:#555}
+#pw-screen input{width:100%;border:1px solid rgba(0,0,0,.2);border-radius:8px;padding:10px 14px;font-family:Georgia,serif;font-size:14px}
+#pw-screen button{background:#1D9E75;color:#fff;border:none;border-radius:8px;padding:10px 20px;font-size:14px;cursor:pointer;font-family:sans-serif;font-weight:600;align-self:flex-start}
+#pw-error{color:#c00;font-family:sans-serif;font-size:13px;display:none}
+.field{margin-bottom:1.2rem}
+.field label{display:block;font-family:sans-serif;font-size:11px;color:#888;margin-bottom:5px;letter-spacing:.04em;text-transform:uppercase}
+.field input,.field textarea,.field select{width:100%;border:1px solid rgba(0,0,0,.2);border-radius:8px;padding:9px 12px;font-family:Georgia,serif;font-size:14px;color:#1a1a1a;background:#f9f9f7;resize:vertical}
+.field textarea{min-height:80px}
+.topic-list{display:flex;flex-direction:column;gap:8px;margin-bottom:1rem}
+.topic-row{background:#f9f9f7;border:1px solid rgba(0,0,0,.1);border-radius:10px;padding:12px 14px;display:flex;align-items:center;gap:10px;transition:border-color .15s}
+.topic-row:hover{border-color:#5DCAA5}
+.topic-row-icon{font-size:18px;min-width:24px;text-align:center}
+.topic-row-info{flex:1;min-width:0}
+.topic-row-name{font-family:sans-serif;font-size:13px;font-weight:600;color:#1a1a1a}
+.topic-row-sub{font-family:sans-serif;font-size:11px;color:#888}
+.topic-row-btns{display:flex;gap:4px}
+.row-btn{background:none;border:1px solid rgba(0,0,0,.15);border-radius:6px;padding:4px 8px;font-size:11px;cursor:pointer;color:#555;font-family:sans-serif}
+.row-btn:hover{border-color:#1D9E75;color:#085041}
+.row-btn.danger:hover{border-color:#c00;color:#c00}
+.add-btn{width:100%;border:2px dashed rgba(0,0,0,.15);border-radius:10px;padding:12px;font-family:sans-serif;font-size:13px;color:#888;background:none;cursor:pointer;transition:border-color .15s,color .15s}
+.add-btn:hover{border-color:#1D9E75;color:#085041}
+.editor-section{background:#f9f9f7;border:1px solid rgba(0,0,0,.1);border-radius:12px;padding:1.2rem;margin-bottom:1rem}
+.editor-section-title{font-family:sans-serif;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#888;margin-bottom:1rem;font-weight:700}
+.slide-list{display:flex;flex-direction:column;gap:8px;margin-bottom:10px}
+.slide-row{background:#fff;border:1px solid rgba(0,0,0,.1);border-radius:8px;padding:10px 12px;display:flex;align-items:flex-start;gap:10px}
+.slide-row-info{flex:1;min-width:0}
+.slide-type-badge{display:inline-block;font-family:sans-serif;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:2px 7px;border-radius:4px;margin-bottom:4px}
+.badge-info{background:#e8f4ff;color:#1060a0}
+.badge-affirmation{background:#E1F5EE;color:#085041}
+.badge-reflection{background:#EEEDFE;color:#534AB7}
+.badge-tip{background:#FAEEDA;color:#BA7517}
+.slide-row-title{font-family:sans-serif;font-size:13px;font-weight:600;color:#1a1a1a;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.slide-row-body{font-family:sans-serif;font-size:11px;color:#888;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.slide-row-btns{display:flex;gap:4px;flex-shrink:0}
+.chips-edit{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:6px}
+.chip-edit{background:#f9f9f7;border:1px solid rgba(0,0,0,.15);border-radius:20px;padding:4px 10px;font-family:sans-serif;font-size:12px;color:#444;display:flex;align-items:center;gap:5px}
+.chip-del{background:none;border:none;color:#c00;cursor:pointer;font-size:14px;line-height:1;padding:0}
+.chip-add-row{display:flex;gap:6px;margin-top:6px}
+.chip-add-row input{flex:1;border:1px solid rgba(0,0,0,.2);border-radius:8px;padding:6px 10px;font-family:sans-serif;font-size:12px}
+.chip-add-row button{background:#085041;color:#fff;border:none;border-radius:8px;padding:6px 12px;font-size:12px;cursor:pointer;font-family:sans-serif}
+.slide-modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:1100;align-items:center;justify-content:center;padding:20px}
+.slide-modal-bg.open{display:flex}
+.slide-modal{background:#fff;border-radius:16px;padding:1.8rem;width:100%;max-width:540px;max-height:90vh;overflow-y:auto}
+.slide-modal h4{font-size:16px;margin-bottom:1.4rem}
+.type-picker{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1rem}
+.type-btn{padding:7px 14px;border-radius:20px;border:2px solid transparent;font-family:sans-serif;font-size:12px;font-weight:700;cursor:pointer;letter-spacing:.05em;text-transform:uppercase;transition:all .15s}
+.type-btn.info{background:#e8f4ff;color:#1060a0;border-color:#b0d4f0}
+.type-btn.affirmation{background:#E1F5EE;color:#085041;border-color:#5DCAA5}
+.type-btn.reflection{background:#EEEDFE;color:#534AB7;border-color:#AFA9EC}
+.type-btn.tip{background:#FAEEDA;color:#BA7517;border-color:#FAC775}
+.type-btn.active{box-shadow:0 0 0 3px rgba(29,158,117,.4)}
+.modal-btns{display:flex;gap:10px;margin-top:1.4rem;flex-wrap:wrap}
+.btn-save{background:#1D9E75;color:#fff;border:none;border-radius:8px;padding:10px 22px;font-size:14px;cursor:pointer;font-family:sans-serif;font-weight:600}
+.btn-cancel{background:none;border:1px solid rgba(0,0,0,.2);color:#888;border-radius:8px;padding:10px 18px;font-size:14px;cursor:pointer;font-family:sans-serif}
+.btn-danger{background:none;border:1px solid #c00;color:#c00;border-radius:8px;padding:10px 18px;font-size:14px;cursor:pointer;font-family:sans-serif}
+#save-toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#085041;color:#fff;font-family:sans-serif;font-size:13px;padding:10px 20px;border-radius:8px;z-index:3000;opacity:0;transition:opacity .3s;pointer-events:none}
+#save-toast.show{opacity:1}
+footer{text-align:center;padding:2rem;font-family:sans-serif;font-size:12px;color:#aaa;border-top:1px solid rgba(0,0,0,.08)}
+@media(max-width:500px){
+  .grid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}
+  .card{padding:1.4rem 1rem}
+  .hero{padding:2rem 1rem 1rem}
+  .modal{border-radius:12px}
+  .cards-grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}
+}
+</style>
+</head>
+<body>
+
+<button id="edit-btn" onclick="openEditor()">✦ Edit Site</button>
+<div id="save-toast">✓ Saved to cloud</div>
+
+<div class="top-bar">
+  <div><h1>🕊 Anti-Suicide School</h1></div>
+  <span>A community of recovery &amp; hope</span>
+</div>
+<div class="crisis-bar">
+  📞 <strong>If you are in crisis right now, please call or text <a href="tel:988">988</a></strong> — the Suicide &amp; Crisis Lifeline is free, confidential, and available 24/7. You do not have to be alone in this moment.
+</div>
+<div class="disclaimer">
+  <p>⚠️ <strong>Not medical advice.</strong> This is a peer community where people share stories of recovery, coping, and hope. Nothing here replaces a licensed mental health professional.</p>
+  <p>🌱 <strong>We are just getting started.</strong> Anti-Suicide School is a new and growing community. Content and features are being added all the time — thank you for your patience as we build this space together.</p>
+</div>
+
+<div class="hero">
+  <div class="eyebrow" id="disp-eyebrow">A guide for the mind</div>
+  <h2 id="disp-title">You Are Not Your Thoughts</h2>
+  <p id="disp-intro">Whatever is weighing on you right now, you do not have to face it alone. Choose what you are experiencing below and move through it, one gentle step at a time. This space is for you.</p>
+  <div class="divider"></div>
+</div>
+
+<div id="home-view">
+  <p class="section-label">Choose what you are experiencing</p>
+  <div class="grid" id="topic-grid"></div>
+
+  <div id="boardgame-section" style="margin-top:3rem">
+    <p class="section-heading">🎲 The Board Game</p>
+    <div class="boardgame-card">
+      <div class="boardgame-card-header">
+        <div>
+          <h3>Anti-Suicide School Board Game</h3>
+          <p>A peer wellness game for connection, reflection, and hope</p>
+        </div>
+      </div>
+      <div class="boardgame-img-wrap">
+        <div id="boardgame-placeholder">
+          <div class="ph-icon">🎲</div>
+          <div>Board game image will appear here once uploaded.</div>
+        </div>
+        <img id="boardgame-img" src="" alt="Anti-Suicide School Board Game" style="display:none">
+      </div>
+      <div id="bg-admin-bar">
+        <label>Admin — Board Game Image</label>
+        <button class="btn-upload-bg" onclick="uploadBoardGame()">⬆ Upload Image</button>
+        <span id="bg-upload-status"></span>
+      </div>
+      <div class="boardgame-footer">
+        <span id="boardgame-desc">Download the full-size board game image to print and play.</span>
+        <a id="boardgame-download" class="btn-download" download="anti-suicide-school-boardgame.jpg">⬇ Download Board Game</a>
+      </div>
+    </div>
+  </div>
+
+  <div id="cards-section" style="margin-top:3rem">
+    <div class="cards-header">
+      <div class="cards-header-left">
+        <p class="section-heading" style="text-align:left;margin-bottom:2px">🃏 Wellness Cards</p>
+        <div class="cards-count" id="cards-count">0 cards</div>
+      </div>
+      <div id="cards-admin-bar">
+        <button class="btn-upload-card" onclick="uploadCards()">⬆ Add Cards</button>
+        <span id="card-upload-status"></span>
+      </div>
+    </div>
+    <div class="cards-grid" id="cards-grid">
+      <div id="cards-empty"><div class="ph-icon">🃏</div><div>Cards will appear here once uploaded.</div></div>
+    </div>
+  </div>
+</div>
+
+<div id="lightbox">
+  <button id="lightbox-close" onclick="closeLightbox()">×</button>
+  <button id="lightbox-prev" onclick="lightboxNav(-1)">‹</button>
+  <img id="lightbox-img" src="" alt="">
+  <button id="lightbox-next" onclick="lightboxNav(1)">›</button>
+</div>
+
+<div id="journey-view">
+  <button class="back-btn" onclick="goHome()">← Back to all topics</button>
+  <div class="journey-label" id="j-label"></div>
+  <div class="journey-title" id="j-title"></div>
+  <div class="progress" id="j-progress"></div>
+  <div class="card" id="j-card">
+    <div class="card-eyebrow" id="j-eyebrow"></div>
+    <div class="card-title" id="j-ctitle"></div>
+    <div class="card-body" id="j-body"></div>
+  </div>
+  <div class="screen-nav">
+    <button class="btn-prev" id="btn-prev" onclick="prev()">← Previous</button>
+    <span class="counter" id="j-counter"></span>
+    <button class="btn-next" id="btn-next" onclick="next()">Next →</button>
+  </div>
+  <div class="ai-panel">
+    <div class="ai-header"><span class="ai-badge">AI</span><span>Ask for deeper support</span></div>
+    <div class="chips" id="j-chips"></div>
+    <div class="ai-row">
+      <input class="ai-input" id="ai-in" placeholder="Ask anything about what you are experiencing…" />
+      <button class="ai-send" onclick="askAI()">Ask</button>
+    </div>
+    <div class="ai-out" id="ai-out"></div>
+  </div>
+</div>
+
+<!-- EDITOR MODAL -->
+<div class="modal-bg" id="editor-modal">
+  <div class="modal">
+    <div id="pw-screen">
+      <div style="padding-top:.2rem">
+        <p style="font-size:16px;font-weight:700;color:#1a1a1a;margin-bottom:6px">Editor Access</p>
+        <p>Enter your password to edit topics, slides, and site content.</p>
+      </div>
+      <input type="password" id="pw-input" placeholder="Password" onkeydown="if(event.key==='Enter')checkPw()">
+      <span id="pw-error">Incorrect password. Try again.</span>
+      <div style="display:flex;gap:10px">
+        <button onclick="checkPw()">Unlock Editor</button>
+        <button onclick="closeEditor()" style="background:none;border:1px solid rgba(0,0,0,.2);color:#888;border-radius:8px;padding:10px 18px;font-size:14px;cursor:pointer;font-family:sans-serif">Cancel</button>
+      </div>
+    </div>
+    <div id="editor-content" style="display:none">
+      <div class="modal-header">
+        <h3>✦ Site Editor</h3>
+        <button class="modal-close" onclick="closeEditor()">×</button>
+      </div>
+      <div class="modal-tabs">
+        <button class="mtab active" id="tab-intro" onclick="switchTab('intro')">Introduction</button>
+        <button class="mtab" id="tab-topics" onclick="switchTab('topics')">Topics &amp; Slides</button>
+        <button class="mtab" id="tab-sync" onclick="switchTab('sync')">Save &amp; Sync</button>
+      </div>
+      <div class="modal-body" id="panel-intro">
+        <div class="field"><label>Eyebrow (small text)</label><input id="m-eyebrow" type="text"></div>
+        <div class="field"><label>Main Title</label><input id="m-title" type="text"></div>
+        <div class="field"><label>Introduction paragraph</label><textarea id="m-intro"></textarea></div>
+        <div class="modal-btns">
+          <button class="btn-save" onclick="saveIntro()">Save Introduction</button>
+          <button class="btn-cancel" onclick="closeEditor()">Close</button>
+        </div>
+      </div>
+      <div class="modal-body" id="panel-topics" style="display:none">
+        <p style="font-family:sans-serif;font-size:13px;color:#555;margin-bottom:1rem">Click Edit on a topic to manage its slides. Use ↑↓ to reorder.</p>
+        <div class="topic-list" id="editor-topic-list"></div>
+        <button class="add-btn" onclick="addTopic()">+ Add New Topic</button>
+        <div style="margin-top:1rem;display:flex;gap:10px">
+          <button class="btn-save" onclick="saveTopics()">Save All Topics</button>
+          <button class="btn-cancel" onclick="closeEditor()">Close</button>
+        </div>
+      </div>
+      <div class="modal-body" id="panel-sync" style="display:none">
+        <div class="editor-section">
+          <div class="editor-section-title">Board Game Image</div>
+          <div id="sync-bg-status" style="font-family:sans-serif;font-size:13px;color:#555;margin-bottom:10px">No board game image uploaded yet.</div>
+          <button class="btn-upload-bg" onclick="uploadBoardGame()">⬆ Upload Board Game Image</button>
+        </div>
+        <div class="editor-section">
+          <div class="editor-section-title">Wellness Cards</div>
+          <div id="sync-cards-status" style="font-family:sans-serif;font-size:13px;color:#555;margin-bottom:10px">0 cards uploaded.</div>
+          <button class="btn-upload-card" onclick="uploadCards()">⬆ Add Cards</button>
+        </div>
+        <div class="editor-section">
+          <div class="editor-section-title">Cloud Sync Status</div>
+          <div id="sync-status-text" style="font-family:sans-serif;font-size:13px;color:#555;line-height:1.7;margin-bottom:12px">Checking…</div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <button class="btn-save" onclick="forceSaveNow()">💾 Force Save Now</button>
+            <button class="btn-cancel" onclick="reloadFromCloud()">🔄 Reload From Cloud</button>
+          </div>
+        </div>
+        <div class="editor-section" style="background:#FFF8F0;border-color:#F0D9BE">
+          <div class="editor-section-title" style="color:#BA7517">If things keep disappearing</div>
+          <p style="font-family:sans-serif;font-size:13px;color:#5A4422;line-height:1.6">
+            Every save now waits for the previous one to finish and double-checks the cloud copy afterward, so uploading several cards quickly won't overwrite each other anymore.
+            If the status above ever says <strong>"not verified"</strong> repeatedly, the most likely cause is your Cloudinary upload preset (<code>jkwhmbjg</code>). In your Cloudinary dashboard under Settings → Upload → that preset, make sure <strong>Overwrite</strong> is turned on and <strong>Unique filename</strong> is turned off — otherwise every save quietly creates a brand-new file instead of replacing the old one, and the site keeps pointing at the original empty one.
+          </p>
+        </div>
+        <div class="modal-btns">
+          <button class="btn-cancel" onclick="closeEditor()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOPIC DETAIL EDITOR -->
+<div class="modal-bg" id="topic-editor-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="topic-editor-title">Edit Topic</h3>
+      <button class="modal-close" onclick="closeTopicEditor()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="editor-section">
+        <div class="editor-section-title">Topic Info</div>
+        <div style="display:grid;grid-template-columns:60px 1fr;gap:10px;margin-bottom:10px">
+          <div class="field" style="margin:0"><label>Icon</label><input id="te-icon" type="text" style="text-align:center;font-size:20px"></div>
+          <div class="field" style="margin:0"><label>Topic Name</label><input id="te-name" type="text" placeholder="e.g. Anxiety"></div>
+        </div>
+        <div class="field"><label>Subtitle</label><input id="te-sub" type="text" placeholder="e.g. Worry &amp; nervousness"></div>
+      </div>
+      <div class="editor-section">
+        <div class="editor-section-title">AI Suggestion Chips</div>
+        <div class="chips-edit" id="te-chips-list"></div>
+        <div class="chip-add-row">
+          <input id="te-chip-input" type="text" placeholder="Add a suggested question…">
+          <button onclick="addChip()">Add</button>
+        </div>
+      </div>
+      <div class="editor-section">
+        <div class="editor-section-title">Slides — <span id="te-slide-count" style="text-transform:none;font-style:italic;font-weight:400;letter-spacing:0;color:#aaa"></span></div>
+        <div class="slide-list" id="te-slide-list"></div>
+        <button class="add-btn" onclick="addSlide()">+ Add New Slide</button>
+      </div>
+      <div class="modal-btns">
+        <button class="btn-save" onclick="saveTopicEditor()">Save Topic</button>
+        <button class="btn-cancel" onclick="closeTopicEditor()">Cancel</button>
+        <button class="btn-danger" onclick="deleteTopic()">Delete Topic</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE EDITOR MODAL -->
+<div class="slide-modal-bg" id="slide-modal">
+  <div class="slide-modal">
+    <h4 id="slide-modal-title">Edit Slide</h4>
+    <div class="field">
+      <label>Slide Type</label>
+      <div class="type-picker">
+        <button class="type-btn info active" data-type="info" onclick="setSlideType('info',this)">Info</button>
+        <button class="type-btn affirmation" data-type="affirmation" onclick="setSlideType('affirmation',this)">Affirmation</button>
+        <button class="type-btn reflection" data-type="reflection" onclick="setSlideType('reflection',this)">Reflection</button>
+        <button class="type-btn tip" data-type="tip" onclick="setSlideType('tip',this)">Tip</button>
+      </div>
+    </div>
+    <div class="field"><label>Eyebrow (small label)</label><input id="sm-eyebrow" type="text" placeholder="e.g. A truth for you"></div>
+    <div class="field"><label>Slide Title</label><input id="sm-title" type="text" placeholder="e.g. You are not alone"></div>
+    <div class="field"><label>Body Text</label><textarea id="sm-body" style="min-height:140px" placeholder="The main content of this slide…"></textarea></div>
+    <div class="modal-btns">
+      <button class="btn-save" onclick="saveSlide()">Save Slide</button>
+      <button class="btn-cancel" onclick="closeSlideModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<footer>Anti-Suicide School · Not medical advice · Call or text 988 if you are in crisis</footer>
+
+<script>
+// ============================================================
+// CONFIG
+// ============================================================
+var CLOUD_NAME = 'dkxkoe3af';
+var UPLOAD_PRESET = 'jkwhmbjg';
+var PASS = 'Jesuschrist4321!';
+var DATA_PUBLIC_ID = 'ass_sitedata';
+
+// ============================================================
+// DEFAULT DATA — hardcoded so the site always has content
+// ============================================================
+var DEFAULT_TOPICS = [
+  {name:"Anxiety",icon:"🌊",sub:"Worry & nervousness",chips:["How do I calm anxiety quickly?","What is anxiety really?","Breathing exercises"],
+   screens:[
+    {type:"info",ey:"Understanding emotions",ti:"Anxiety is your body's alarm",bo:"Anxiety isn't a flaw — it's your nervous system trying to protect you. It becomes a problem when the alarm stays on even when there's no real danger. You can learn to turn it down."},
+    {type:"affirmation",ey:"A truth for you",ti:"You have survived every anxious moment so far",bo:"Look back at every time anxiety told you something terrible would happen. You made it through. That record is 100%. Your body knows how to come back to calm."},
+    {type:"tip",ey:"A practice",ti:"The 4-7-8 breath",bo:"Breathe in for 4 counts. Hold for 7. Breathe out slowly for 8.\n\nDo this 3 times. It activates your parasympathetic nervous system and physically signals safety to your body."}
+  ]},
+  {name:"Depression",icon:"🌧",sub:"Low mood & emptiness",chips:["Why do I feel numb?","Small steps when depressed","Depression vs sadness"],
+   screens:[
+    {type:"info",ey:"Understanding depression",ti:"Depression is an illness, not a weakness",bo:"Depression changes the chemistry of your brain, making even simple things feel impossibly heavy. It is not your fault, and it does not mean something is permanently wrong with you."},
+    {type:"tip",ey:"A small step",ti:"Do one tiny thing",bo:"Depression shrinks our world. The antidote is movement, even tiny movement. Make your bed. Step outside for two minutes. Send one text.\n\nAction comes before motivation, not after."}
+  ]},
+  {name:"Hopelessness",icon:"🌑",sub:"\"Nothing will get better\"",chips:["How to feel hope again","What is hopelessness?"],
+   screens:[
+    {type:"info",ey:"About hopelessness",ti:"Hopelessness is a symptom, not a fact",bo:"When we feel hopeless, our brain presents it as an accurate assessment of reality. But hopelessness is often a symptom of depression that distorts how we see the future. It feels true; that does not mean it is."},
+    {type:"affirmation",ey:"A truth",ti:"People have recovered from exactly where you are now",bo:"The darkest moments in people's lives have been followed — sometimes slowly, sometimes surprisingly quickly — by something different. You cannot see that from inside this moment, but it has happened and it can happen again."}
+  ]},
+  {name:"Loneliness",icon:"🌙",sub:"Feeling disconnected",chips:["Why do I feel so alone?","How to connect with others","Loneliness vs solitude"],
+   screens:[
+    {type:"info",ey:"About loneliness",ti:"Loneliness is a signal, not a sentence",bo:"Loneliness is your mind telling you that connection matters to you. That is not a weakness — it is deeply human. The feeling is painful, but it points toward something real: your need to belong."},
+    {type:"affirmation",ey:"A truth for you",ti:"You are not alone in feeling alone",bo:"Loneliness is one of the most common human experiences, even when it feels like no one else could understand. Millions of people feel exactly what you feel right now. That is a kind of invisible community."},
+    {type:"tip",ey:"A practice",ti:"One small reach",bo:"You do not have to fix loneliness all at once. Send one message. Say hello to one person today. Small reaches build bridges over time."}
+  ]},
+  {name:"Grief",icon:"🕯",sub:"Loss & mourning",chips:["Is what I feel normal?","How long does grief last?","Grief and depression"],
+   screens:[
+    {type:"info",ey:"Understanding grief",ti:"Grief has no wrong way",bo:"There is no correct timeline for grief and no feelings that are off-limits. Sadness, anger, numbness, even unexpected laughter — all of it is part of how humans process loss."},
+    {type:"affirmation",ey:"A truth",ti:"Grieving means you loved",bo:"The depth of grief reflects the depth of connection. What hurts so much is evidence of something that mattered. Your grief is an act of love."}
+  ]},
+  {name:"Overwhelm",icon:"🌪",sub:"Too much, all at once",chips:["How to handle overwhelm","Prioritizing when everything feels urgent","Grounding techniques"],
+   screens:[
+    {type:"info",ey:"Understanding overwhelm",ti:"Your brain has a limit — and that's okay",bo:"When too many demands hit at once, the brain's processing capacity gets flooded. This is not weakness. It is biology. The answer is not to push harder but to reduce the load, even temporarily."},
+    {type:"tip",ey:"A practice",ti:"Name five things",bo:"Look around you. Name 5 things you can see. 4 you can touch. 3 you can hear. 2 you can smell. 1 you can taste.\n\nThis grounds your nervous system in the present moment and interrupts the spiral."}
+  ]},
+  {name:"Shame",icon:"🪞",sub:"\"I am the problem\"",chips:["Shame vs guilt","How to heal shame","Why do I hate myself?"],
+   screens:[
+    {type:"info",ey:"Understanding shame",ti:"Shame says \"I am bad\" — that is a lie",bo:"Guilt says \"I did something wrong.\" Shame says \"I am wrong.\" Shame is one of the most painful emotions because it attacks identity itself. But shame is learned — which means it can be unlearned."},
+    {type:"affirmation",ey:"A truth",ti:"You are not your worst moment",bo:"No single act, failure, or mistake defines the whole of who you are. Every person you admire has a collection of things they are not proud of. You are more than any of yours."}
+  ]},
+  {name:"Anger",icon:"🔥",sub:"Rage & frustration",chips:["Is anger okay to feel?","Healthy ways to express anger","Anger and depression"],
+   screens:[
+    {type:"info",ey:"Understanding anger",ti:"Anger is information",bo:"Anger tells you that something feels unjust, threatening, or out of your control. It is not a flaw in your character. The question is not whether to feel it, but what to do with it."},
+    {type:"tip",ey:"A practice",ti:"Move the energy",bo:"Anger is physical. It floods your body with cortisol and adrenaline. Physical movement — a walk, stretching, hitting a pillow — metabolizes those chemicals and gives the feeling somewhere to go."}
+  ]}
+];
+
+var DEFAULT_SITETEXT = {
+  eyebrow: "A guide for the mind",
+  title: "You Are Not Your Thoughts",
+  intro: "Whatever is weighing on you right now, you do not have to face it alone. Choose what you are experiencing below and move through it, one gentle step at a time. This space is for you."
+};
+
+// ============================================================
+// STATE — initialized from defaults so page is never empty
+// ============================================================
+var unlocked = false;
+var siteText = Object.assign({}, DEFAULT_SITETEXT);
+var topics = JSON.parse(JSON.stringify(DEFAULT_TOPICS));
+var boardGameUrl = '';
+var cards = [];
+var curTopic = 0, curScreen = 0;
+var editingTopicIdx = -1, editingTopicData = null, editingSlideIdx = -1, currentSlideType = 'info';
+var lightboxIndex = 0;
+
+// ============================================================
+// CLOUD PERSISTENCE
+// ============================================================
+// Hardcoded Cloudinary URL — same for every visitor on every device
+var CLOUD_DATA_URL = 'https://res.cloudinary.com/dkxkoe3af/raw/upload/ass_sitedata';
+var lastSavedAt = null;      // timestamp of the most recent save we sent
+var lastVerifiedAt = null;   // timestamp of the most recent save we confirmed landed in the cloud
+var lastSaveOk = null;       // true / false / null(unknown yet)
+var saveChain = Promise.resolve(); // ensures saves run one at a time, never in parallel
+
+async function loadFromCloud() {
+  // 1) Paint local backup immediately (if any) so the page is never blank,
+  //    even before the network request comes back.
+  try {
+    var localRaw = localStorage.getItem('ass_sitedata_v2');
+    if (localRaw) {
+      var local = JSON.parse(localRaw);
+      if (local.siteText) siteText = local.siteText;
+      if (local.topics && local.topics.length > 0) topics = local.topics;
+      if (local.boardGameUrl !== undefined) boardGameUrl = local.boardGameUrl;
+      if (local.cards) cards = local.cards;
+      lastSavedAt = local.savedAt || null;
+    }
+  } catch(e) {}
+  init();
+
+  // 2) Fetch the cloud copy and use it if it's present and as-new-or-newer
+  //    than what we have locally, so we never silently regress to stale data.
+  try {
+    var r = await fetch(CLOUD_DATA_URL + '?t=' + Date.now());
+    if (!r.ok) throw new Error('not found');
+    var data = await r.json();
+    var cloudIsNewer = !lastSavedAt || !data.savedAt || data.savedAt >= lastSavedAt;
+    if (cloudIsNewer) {
+      if (data.siteText) siteText = data.siteText;
+      if (data.topics && data.topics.length > 0) topics = data.topics;
+      if (data.boardGameUrl !== undefined) boardGameUrl = data.boardGameUrl;
+      if (data.cards) cards = data.cards;
+      lastSavedAt = data.savedAt || lastSavedAt;
+      lastVerifiedAt = lastSavedAt;
+      lastSaveOk = true;
+    }
+  } catch(e) {
+    // Cloud fetch failed — local backup (if any) or defaults remain showing
+  }
+  init();
+}
+
+// Public entry point — queues the save so concurrent calls never race
+// each other and overwrite one another's work.
+function saveToCloud() {
+  saveChain = saveChain.then(doSaveToCloud).catch(function(e){ console.error('save error', e); });
+  return saveChain;
+}
+
+async function doSaveToCloud() {
+  showToast('Saving…');
+  var savedAt = Date.now();
+  var data = { siteText: siteText, topics: topics, boardGameUrl: boardGameUrl, cards: cards, savedAt: savedAt };
+  var json = JSON.stringify(data);
+
+  // Always write the local backup first — this copy never gets lost
+  // even if the network or Cloudinary preset misbehaves.
+  try { localStorage.setItem('ass_sitedata_v2', json); } catch(e) {}
+
+  var blob = new Blob([json], { type: 'application/json' });
+  var fd = new FormData();
+  fd.append('file', blob, 'sitedata.json');
+  fd.append('upload_preset', UPLOAD_PRESET);
+  fd.append('public_id', DATA_PUBLIC_ID);
+  fd.append('resource_type', 'raw');
+  fd.append('overwrite', 'true');
+  fd.append('invalidate', 'true');
+
+  try {
+    var r = await fetch('https://api.cloudinary.com/v1_1/' + CLOUD_NAME + '/raw/upload', { method: 'POST', body: fd });
+    var result = await r.json();
+    if (!result.secure_url) {
+      lastSaveOk = false;
+      showToast('⚠ Saved locally only');
+      renderSyncPanel();
+      return;
+    }
+    // Verify: re-fetch the public URL and confirm it actually now holds
+    // THIS save's timestamp. If it doesn't, the Cloudinary preset is very
+    // likely creating a new file instead of overwriting the old one.
+    var verifyR = await fetch(CLOUD_DATA_URL + '?t=' + Date.now());
+    var verifyData = verifyR.ok ? await verifyR.json() : null;
+    lastSavedAt = savedAt;
+    if (verifyData && verifyData.savedAt === savedAt) {
+      lastVerifiedAt = savedAt;
+      lastSaveOk = true;
+      showToast('✓ Saved & verified');
+    } else {
+      lastSaveOk = false;
+      showToast('⚠ Saved, but not verified');
+    }
+  } catch(e) {
+    lastSaveOk = false;
+    showToast('⚠ Saved locally only');
+  }
+  renderSyncPanel();
+}
+
+async function forceSaveNow() {
+  await saveToCloud();
+  renderSyncPanel();
+}
+
+async function reloadFromCloud() {
+  showToast('Reloading…');
+  try {
+    var r = await fetch(CLOUD_DATA_URL + '?t=' + Date.now());
+    if (!r.ok) throw new Error('not found');
+    var data = await r.json();
+    if (data.siteText) siteText = data.siteText;
+    if (data.topics) topics = data.topics;
+    if (data.boardGameUrl !== undefined) boardGameUrl = data.boardGameUrl;
+    if (data.cards) cards = data.cards;
+    lastSavedAt = data.savedAt || null;
+    lastVerifiedAt = lastSavedAt;
+    lastSaveOk = true;
+    showToast('✓ Reloaded from cloud');
+  } catch(e) {
+    showToast('⚠ Could not reach cloud');
+  }
+  init();
+  loadIntroFields();
+  renderEditorTopicList();
+  renderSyncPanel();
+}
+
+function fmtTime(ts){
+  if (!ts) return 'never';
+  var d = new Date(ts);
+  return d.toLocaleString();
+}
+
+function renderSyncPanel(){
+  var bgEl = document.getElementById('sync-bg-status');
+  if (bgEl) bgEl.textContent = boardGameUrl ? '✓ Board game image is uploaded and saved.' : 'No board game image uploaded yet.';
+  var cardsEl = document.getElementById('sync-cards-status');
+  if (cardsEl) cardsEl.textContent = cards.length + ' card' + (cards.length !== 1 ? 's' : '') + ' uploaded.';
+  var statusEl = document.getElementById('sync-status-text');
+  if (statusEl) {
+    var lines = [];
+    lines.push('Last save sent: ' + fmtTime(lastSavedAt));
+    lines.push('Last save verified in cloud: ' + fmtTime(lastVerifiedAt));
+    if (lastSaveOk === true) lines.push('<strong style="color:#085041">Status: ✓ in sync</strong>');
+    else if (lastSaveOk === false) lines.push('<strong style="color:#c00">Status: ⚠ not verified — see note below</strong>');
+    else lines.push('Status: unknown — try Force Save Now');
+    statusEl.innerHTML = lines.join('<br>');
+  }
+}
+
+function showToast(msg) {
+  var t = document.getElementById('save-toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(function(){ t.classList.remove('show'); }, 2500);
+}
+
+// ============================================================
+// INIT
+// ============================================================
+function init() {
+  document.getElementById('disp-eyebrow').textContent = siteText.eyebrow;
+  document.getElementById('disp-title').textContent = siteText.title;
+  document.getElementById('disp-intro').textContent = siteText.intro;
+  var grid = document.getElementById('topic-grid');
+  grid.innerHTML = '';
+  topics.forEach(function(t, i) {
+    var btn = document.createElement('button');
+    btn.className = 'topic-btn';
+    btn.innerHTML = '<span class="icon">'+escHtml(t.icon)+'</span><span class="name">'+escHtml(t.name)+'</span><span class="sub">'+escHtml(t.sub)+'</span>';
+    btn.onclick = function(){ openTopic(i); };
+    grid.appendChild(btn);
+  });
+  renderBoardGame();
+  renderCards();
+}
+
+function escHtml(s){
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ============================================================
+// BOARD GAME
+// ============================================================
+function renderBoardGame() {
+  var img = document.getElementById('boardgame-img');
+  var placeholder = document.getElementById('boardgame-placeholder');
+  var dl = document.getElementById('boardgame-download');
+  if (boardGameUrl) {
+    img.src = boardGameUrl;
+    img.style.display = 'block';
+    placeholder.style.display = 'none';
+    dl.href = boardGameUrl;
+    dl.style.opacity = '1';
+    dl.style.pointerEvents = 'auto';
+  } else {
+    img.style.display = 'none';
+    placeholder.style.display = 'block';
+    dl.removeAttribute('href');
+    dl.style.opacity = '0.4';
+    dl.style.pointerEvents = 'none';
+  }
+  if (unlocked) {
+    document.getElementById('bg-admin-bar').classList.add('show');
+    document.getElementById('cards-admin-bar').classList.add('show');
+  } else {
+    document.getElementById('bg-admin-bar').classList.remove('show');
+    document.getElementById('cards-admin-bar').classList.remove('show');
+  }
+}
+
+function uploadBoardGame() {
+  var widget = cloudinary.createUploadWidget({
+    cloudName: CLOUD_NAME, uploadPreset: UPLOAD_PRESET,
+    sources: ['local','url','camera'], multiple: false, maxFiles: 1,
+    resourceType: 'image', clientAllowedFormats: ['jpg','jpeg','png','webp','gif'],
+  }, async function(error, result) {
+    if (!error && result && result.event === 'success') {
+      boardGameUrl = result.info.secure_url;
+      document.getElementById('bg-upload-status').textContent = 'Saving…';
+      await saveToCloud();
+      document.getElementById('bg-upload-status').textContent = '✓ Saved!';
+      setTimeout(function(){ document.getElementById('bg-upload-status').textContent = ''; }, 3000);
+      renderBoardGame();
+    }
+  });
+  widget.open();
+}
+
+// ============================================================
+// CARDS GALLERY
+// ============================================================
+function renderCards() {
+  var grid = document.getElementById('cards-grid');
+  var empty = document.getElementById('cards-empty');
+  var count = document.getElementById('cards-count');
+  count.textContent = cards.length + ' card' + (cards.length !== 1 ? 's' : '');
+  Array.from(grid.querySelectorAll('.card-thumb')).forEach(function(el){ el.remove(); });
+  if (cards.length === 0) { empty.style.display = 'block'; return; }
+  empty.style.display = 'none';
+  cards.forEach(function(url, i) {
+    var thumb = document.createElement('div');
+    thumb.className = 'card-thumb';
+    var img = document.createElement('img');
+    img.src = url; img.alt = 'Wellness Card ' + (i + 1); img.loading = 'lazy';
+    img.onclick = function(){ openLightbox(i); };
+    var delBtn = document.createElement('button');
+    delBtn.className = 'card-thumb-del' + (unlocked ? ' admin-visible' : '');
+    delBtn.title = 'Remove card'; delBtn.textContent = '×';
+    delBtn.onclick = function(e){ e.stopPropagation(); removeCard(i); };
+    thumb.appendChild(img); thumb.appendChild(delBtn); grid.appendChild(thumb);
+  });
+}
+
+function uploadCards() {
+  var widget = cloudinary.createUploadWidget({
+    cloudName: CLOUD_NAME, uploadPreset: UPLOAD_PRESET,
+    sources: ['local','url','camera'], multiple: true,
+    resourceType: 'image', clientAllowedFormats: ['jpg','jpeg','png','webp'],
+  }, async function(error, result) {
+    if (!error && result && result.event === 'success') {
+      cards.push(result.info.secure_url);
+      var status = document.getElementById('card-upload-status');
+      status.textContent = 'Saving…';
+      await saveToCloud();
+      status.textContent = '✓ ' + cards.length + ' card' + (cards.length !== 1 ? 's' : '') + ' saved';
+      setTimeout(function(){ status.textContent = ''; }, 3000);
+      renderCards();
+    }
+  });
+  widget.open();
+}
+
+async function removeCard(i) {
+  if (!confirm('Remove this card?')) return;
+  cards.splice(i, 1);
+  await saveToCloud();
+  renderCards();
+}
+
+// ============================================================
+// LIGHTBOX
+// ============================================================
+function openLightbox(i) {
+  lightboxIndex = i;
+  document.getElementById('lightbox-img').src = cards[i];
+  document.getElementById('lightbox').classList.add('open');
+  document.getElementById('lightbox-prev').style.display = cards.length > 1 ? 'flex' : 'none';
+  document.getElementById('lightbox-next').style.display = cards.length > 1 ? 'flex' : 'none';
+}
+function closeLightbox() { document.getElementById('lightbox').classList.remove('open'); }
+function lightboxNav(dir) {
+  lightboxIndex = (lightboxIndex + dir + cards.length) % cards.length;
+  document.getElementById('lightbox-img').src = cards[lightboxIndex];
+}
+document.getElementById('lightbox').addEventListener('click', function(e){ if(e.target===this) closeLightbox(); });
+document.addEventListener('keydown', function(e){
+  if (!document.getElementById('lightbox').classList.contains('open')) return;
+  if (e.key==='Escape') closeLightbox();
+  if (e.key==='ArrowLeft') lightboxNav(-1);
+  if (e.key==='ArrowRight') lightboxNav(1);
+});
+
+// ============================================================
+// JOURNEY
+// ============================================================
+function openTopic(i) {
+  curTopic = i; curScreen = 0;
+  var t = topics[i];
+  document.getElementById('home-view').style.display = 'none';
+  document.getElementById('journey-view').style.display = 'block';
+  document.getElementById('j-label').textContent = t.name.toUpperCase();
+  document.getElementById('j-title').textContent = t.name;
+  var chips = document.getElementById('j-chips');
+  chips.innerHTML = '';
+  (t.chips||[]).forEach(function(c){
+    var ch = document.createElement('button');
+    ch.className = 'chip'; ch.textContent = c;
+    ch.onclick = function(){ document.getElementById('ai-in').value = c; askAI(); };
+    chips.appendChild(ch);
+  });
+  renderScreen();
+  window.scrollTo(0,0);
+}
+
+function renderScreen() {
+  var t = topics[curTopic];
+  if(!t.screens || t.screens.length === 0) {
+    document.getElementById('j-card').className = 'card info';
+    document.getElementById('j-eyebrow').textContent = '';
+    document.getElementById('j-ctitle').textContent = 'No slides yet';
+    document.getElementById('j-body').textContent = 'This topic has no slides yet.';
+    document.getElementById('j-counter').textContent = '0 of 0';
+    document.getElementById('btn-prev').disabled = true;
+    document.getElementById('btn-next').textContent = 'Finish ✓';
+    document.getElementById('j-progress').innerHTML = '';
+    return;
+  }
+  var s = t.screens[curScreen];
+  var prog = document.getElementById('j-progress');
+  prog.innerHTML = '';
+  t.screens.forEach(function(_,i){
+    var p = document.createElement('div');
+    p.className = 'pip'+(i<curScreen?' done':i===curScreen?' active':'');
+    prog.appendChild(p);
+  });
+  var card = document.getElementById('j-card');
+  card.className = 'card '+(s.type||'info');
+  document.getElementById('j-eyebrow').textContent = s.ey||'';
+  document.getElementById('j-ctitle').textContent = s.ti||'';
+  document.getElementById('j-body').textContent = s.bo||'';
+  document.getElementById('j-counter').textContent = (curScreen+1)+' of '+t.screens.length;
+  document.getElementById('btn-prev').disabled = curScreen===0;
+  document.getElementById('btn-next').textContent = curScreen===t.screens.length-1 ? 'Finish ✓' : 'Next →';
+  document.getElementById('ai-out').style.display='none';
+}
+
+function prev(){ if(curScreen>0){curScreen--;renderScreen();} }
+function next(){
+  var t=topics[curTopic];
+  if(!t.screens||t.screens.length===0){goHome();return;}
+  if(curScreen<t.screens.length-1){curScreen++;renderScreen();}
+  else{goHome();}
+}
+function goHome(){
+  document.getElementById('journey-view').style.display='none';
+  document.getElementById('home-view').style.display='block';
+  window.scrollTo(0,0);
+}
+
+// ============================================================
+// AI
+// ============================================================
+async function askAI(){
+  var q=document.getElementById('ai-in').value.trim();
+  if(!q)return;
+  var out=document.getElementById('ai-out');
+  out.style.display='block';
+  out.innerHTML='<div class="dots"><span></span><span></span><span></span></div>';
+  var t=topics[curTopic];
+  try{
+    var r=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-6',max_tokens:1000,
+        system:'You are a compassionate mental wellness guide on a site called Anti-Suicide School. The user is reading about "'+t.name+'". Give warm, evidence-informed, concise support in 2-4 short paragraphs. Never diagnose. Always encourage professional help for serious concerns. If someone is in crisis, remind them to call or text 988.',
+        messages:[{role:'user',content:q}]
+      })
+    });
+    var d=await r.json();
+    var txt=(d.content||[]).map(function(c){return c.text||'';}).join('');
+    out.textContent=txt||'Unable to reach AI right now. Please try again.';
+  }catch(e){
+    out.textContent='Unable to connect. Please check your connection and try again.';
+  }
+  document.getElementById('ai-in').value='';
+}
+
+// ============================================================
+// EDITOR
+// ============================================================
+function openEditor(){
+  unlocked = false;
+  document.getElementById('pw-screen').style.display = 'flex';
+  document.getElementById('editor-content').style.display = 'none';
+  document.getElementById('pw-input').value = '';
+  document.getElementById('pw-error').style.display = 'none';
+  document.getElementById('editor-modal').classList.add('open');
+}
+function closeEditor(){ document.getElementById('editor-modal').classList.remove('open'); }
+function checkPw(){
+  var v = document.getElementById('pw-input').value;
+  if(v === PASS || v === 'picasso2025'){
+    unlocked = true;
+    document.getElementById('pw-screen').style.display = 'none';
+    document.getElementById('editor-content').style.display = 'block';
+    switchTab('intro');
+    loadIntroFields();
+    renderBoardGame();
+    renderCards();
+  } else {
+    document.getElementById('pw-error').style.display = 'block';
+  }
+}
+function switchTab(tab){
+  document.getElementById('tab-intro').className = 'mtab'+(tab==='intro'?' active':'');
+  document.getElementById('tab-topics').className = 'mtab'+(tab==='topics'?' active':'');
+  document.getElementById('tab-sync').className = 'mtab'+(tab==='sync'?' active':'');
+  document.getElementById('panel-intro').style.display = tab==='intro'?'block':'none';
+  document.getElementById('panel-topics').style.display = tab==='topics'?'block':'none';
+  document.getElementById('panel-sync').style.display = tab==='sync'?'block':'none';
+  if(tab==='topics') renderEditorTopicList();
+  if(tab==='sync') renderSyncPanel();
+}
+function loadIntroFields(){
+  document.getElementById('m-eyebrow').value = siteText.eyebrow;
+  document.getElementById('m-title').value = siteText.title;
+  document.getElementById('m-intro').value = siteText.intro;
+}
+async function saveIntro(){
+  siteText.eyebrow = document.getElementById('m-eyebrow').value;
+  siteText.title = document.getElementById('m-title').value;
+  siteText.intro = document.getElementById('m-intro').value;
+  await saveToCloud();
+  init();
+  closeEditor();
+}
+
+// ============================================================
+// TOPICS LIST
+// ============================================================
+function renderEditorTopicList(){
+  var list = document.getElementById('editor-topic-list');
+  list.innerHTML = '';
+  topics.forEach(function(t, i){
+    var row = document.createElement('div');
+    row.className = 'topic-row';
+    row.innerHTML =
+      '<span class="topic-row-icon">'+escHtml(t.icon)+'</span>'+
+      '<div class="topic-row-info">'+
+        '<div class="topic-row-name">'+escHtml(t.name)+'</div>'+
+        '<div class="topic-row-sub">'+escHtml(t.sub)+'  ·  '+(t.screens?t.screens.length:0)+' slide'+((!t.screens||t.screens.length!==1)?'s':'')+'</div>'+
+      '</div>'+
+      '<div class="topic-row-btns">'+
+        (i>0?'<button class="row-btn" onclick="moveTopic('+i+','+(i-1)+',event)">↑</button>':'')+
+        (i<topics.length-1?'<button class="row-btn" onclick="moveTopic('+i+','+(i+1)+',event)">↓</button>':'')+
+        '<button class="row-btn" onclick="openTopicEditor('+i+',event)">Edit</button>'+
+      '</div>';
+    list.appendChild(row);
+  });
+}
+async function moveTopic(from, to, e){
+  e.stopPropagation();
+  var tmp = topics.splice(from,1)[0];
+  topics.splice(to,0,tmp);
+  renderEditorTopicList();
+  await saveToCloud();
+}
+function addTopic(){
+  topics.push({name:'New Topic',icon:'✦',sub:'Brief description',chips:[],screens:[]});
+  openTopicEditor(topics.length-1, null);
+}
+async function saveTopics(){
+  await saveToCloud();
+  init();
+  closeEditor();
+}
+
+// ============================================================
+// TOPIC EDITOR
+// ============================================================
+function openTopicEditor(idx, e){
+  if(e) e.stopPropagation();
+  editingTopicIdx = idx;
+  editingTopicData = JSON.parse(JSON.stringify(topics[idx]));
+  document.getElementById('topic-editor-title').textContent = 'Edit Topic: '+editingTopicData.name;
+  document.getElementById('te-icon').value = editingTopicData.icon||'';
+  document.getElementById('te-name').value = editingTopicData.name||'';
+  document.getElementById('te-sub').value = editingTopicData.sub||'';
+  renderChipsEditor();
+  renderSlideList();
+  document.getElementById('topic-editor-modal').classList.add('open');
+}
+function closeTopicEditor(){ document.getElementById('topic-editor-modal').classList.remove('open'); }
+async function saveTopicEditor(){
+  editingTopicData.icon = document.getElementById('te-icon').value;
+  editingTopicData.name = document.getElementById('te-name').value;
+  editingTopicData.sub = document.getElementById('te-sub').value;
+  topics[editingTopicIdx] = editingTopicData;
+  await saveToCloud();
+  init();
+  renderEditorTopicList();
+  closeTopicEditor();
+}
+async function deleteTopic(){
+  if(!confirm('Delete this topic and all its slides? This cannot be undone.')) return;
+  topics.splice(editingTopicIdx,1);
+  await saveToCloud();
+  init();
+  renderEditorTopicList();
+  closeTopicEditor();
+}
+
+// ============================================================
+// CHIPS EDITOR
+// ============================================================
+function renderChipsEditor(){
+  var list = document.getElementById('te-chips-list');
+  list.innerHTML = '';
+  (editingTopicData.chips||[]).forEach(function(c, i){
+    var span = document.createElement('span');
+    span.className = 'chip-edit';
+    span.innerHTML = escHtml(c)+'<button class="chip-del" onclick="removeChip('+i+')" title="Remove">×</button>';
+    list.appendChild(span);
+  });
+}
+async function addChip(){
+  var inp = document.getElementById('te-chip-input');
+  var val = inp.value.trim();
+  if(!val) return;
+  if(!editingTopicData.chips) editingTopicData.chips=[];
+  editingTopicData.chips.push(val);
+  inp.value='';
+  renderChipsEditor();
+  topics[editingTopicIdx] = JSON.parse(JSON.stringify(editingTopicData));
+  await saveToCloud();
+}
+async function removeChip(i){
+  editingTopicData.chips.splice(i,1);
+  renderChipsEditor();
+  topics[editingTopicIdx] = JSON.parse(JSON.stringify(editingTopicData));
+  await saveToCloud();
+}
+
+// ============================================================
+// SLIDE LIST
+// ============================================================
+function renderSlideList(){
+  var list = document.getElementById('te-slide-list');
+  list.innerHTML='';
+  document.getElementById('te-slide-count').textContent = (editingTopicData.screens?editingTopicData.screens.length:0)+' slides';
+  if(!editingTopicData.screens||editingTopicData.screens.length===0){
+    list.innerHTML='<p style="font-family:sans-serif;font-size:13px;color:#aaa;padding:8px 0">No slides yet. Add one below.</p>';
+    return;
+  }
+  editingTopicData.screens.forEach(function(s, i){
+    var row = document.createElement('div');
+    row.className = 'slide-row';
+    var typeBadge = '<span class="slide-type-badge badge-'+(s.type||'info')+'">'+escHtml(s.type||'info')+'</span>';
+    row.innerHTML =
+      '<div class="slide-row-info">'+typeBadge+
+        '<div class="slide-row-title">'+escHtml(s.ti||'(No title)')+'</div>'+
+        '<div class="slide-row-body">'+escHtml((s.bo||'').substring(0,80)+(s.bo&&s.bo.length>80?'…':''))+'</div>'+
+      '</div>'+
+      '<div class="slide-row-btns">'+
+        (i>0?'<button class="row-btn" onclick="moveSlide('+i+','+(i-1)+')">↑</button>':'')+
+        (i<editingTopicData.screens.length-1?'<button class="row-btn" onclick="moveSlide('+i+','+(i+1)+')">↓</button>':'')+
+        '<button class="row-btn" onclick="openSlideModal('+i+')">Edit</button>'+
+        '<button class="row-btn danger" onclick="deleteSlide('+i+')">✕</button>'+
+      '</div>';
+    list.appendChild(row);
+  });
+}
+async function moveSlide(from, to){
+  var tmp = editingTopicData.screens.splice(from,1)[0];
+  editingTopicData.screens.splice(to,0,tmp);
+  renderSlideList();
+  topics[editingTopicIdx] = JSON.parse(JSON.stringify(editingTopicData));
+  await saveToCloud();
+}
+async function deleteSlide(i){
+  if(!confirm('Delete this slide?')) return;
+  editingTopicData.screens.splice(i,1);
+  renderSlideList();
+  topics[editingTopicIdx] = JSON.parse(JSON.stringify(editingTopicData));
+  await saveToCloud();
+}
+function addSlide(){ openSlideModal(-1); }
+
+// ============================================================
+// SLIDE MODAL
+// ============================================================
+function openSlideModal(idx){
+  editingSlideIdx = idx;
+  var isNew = idx === -1;
+  document.getElementById('slide-modal-title').textContent = isNew ? 'Add New Slide' : 'Edit Slide';
+  var s = isNew ? {type:'info',ey:'',ti:'',bo:''} : editingTopicData.screens[idx];
+  currentSlideType = s.type || 'info';
+  document.querySelectorAll('.type-btn').forEach(function(btn){
+    btn.classList.toggle('active', btn.dataset.type === currentSlideType);
+  });
+  document.getElementById('sm-eyebrow').value = s.ey||'';
+  document.getElementById('sm-title').value = s.ti||'';
+  document.getElementById('sm-body').value = s.bo||'';
+  document.getElementById('slide-modal').classList.add('open');
+}
+function closeSlideModal(){ document.getElementById('slide-modal').classList.remove('open'); }
+function setSlideType(type, btn){
+  currentSlideType = type;
+  document.querySelectorAll('.type-btn').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+}
+async function saveSlide(){
+  var s = {
+    type: currentSlideType,
+    ey: document.getElementById('sm-eyebrow').value,
+    ti: document.getElementById('sm-title').value,
+    bo: document.getElementById('sm-body').value
+  };
+  if(!editingTopicData.screens) editingTopicData.screens = [];
+  if(editingSlideIdx === -1){
+    editingTopicData.screens.push(s);
+  } else {
+    editingTopicData.screens[editingSlideIdx] = s;
+  }
+  // Immediately write back to the live topics array AND push to the cloud,
+  // so the slide is never lost even if the editor is closed without
+  // clicking "Save Topic" afterward.
+  topics[editingTopicIdx] = JSON.parse(JSON.stringify(editingTopicData));
+  closeSlideModal();
+  renderSlideList();
+  await saveToCloud();
+}
+
+// ============================================================
+// KEYBOARD
+// ============================================================
+document.getElementById('pw-input').addEventListener('keydown', function(e){ if(e.key==='Enter') checkPw(); });
+document.getElementById('te-chip-input').addEventListener('keydown', function(e){ if(e.key==='Enter') addChip(); });
+
+// ============================================================
+// BOOT — render defaults first, then load cloud data on top
+// ============================================================
+loadFromCloud();
+</script>
+
+<script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>
+</body>
+</html>
